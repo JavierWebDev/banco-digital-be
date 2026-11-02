@@ -1,11 +1,12 @@
 package org.example.bancodigitalbe.adapters.in.web;
 
+import org.example.bancodigitalbe.domain.model.User;
 
-public class RegisterUserSuccessResponse {
-    private final Long userId;
-
-
-    public RegisterUserSuccessResponse(Long userId) {
-        this.userId = userId;
+public record RegisterUserSuccessResponse(
+        Long userId,
+        String user
+) {
+    public static RegisterUserSuccessResponse fromDomainUser(User user) {
+        return new RegisterUserSuccessResponse(user.getUserId(), user.getUser());
     }
 }
