@@ -22,7 +22,7 @@ class LoginServiceTest {
     private LoadUserPort loadUserPort;
 
     private User existingUser() {
-        return new User(1L, "javier", "$2a$10$hash", "Javier", "Gomez", LocalDate.of(2000, 1, 1));
+        return new User(1L, "javier", "$2a$10$hash", "Javier", "Gomez", LocalDate.of(2000, 1, 1), null, null, null);
     }
 
     @Test

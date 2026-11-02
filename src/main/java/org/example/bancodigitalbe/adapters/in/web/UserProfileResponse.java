@@ -9,7 +9,10 @@ public record UserProfileResponse(
         String user,
         String name,
         String lastName,
-        LocalDate birthDate
+        LocalDate birthDate,
+        String email,
+        String phone,
+        String address
 ) {
     public static UserProfileResponse fromDomainUser(User user) {
         return new UserProfileResponse(
@@ -17,7 +20,10 @@ public record UserProfileResponse(
                 user.getUser(),
                 user.getName(),
                 user.getLastName(),
-                user.getBirthDate()
+                user.getBirthDate(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getAddress()
         );
     }
 }

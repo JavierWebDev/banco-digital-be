@@ -5,13 +5,14 @@ import org.example.bancodigitalbe.domain.model.NewUser;
 import org.example.bancodigitalbe.domain.model.User;
 import org.example.bancodigitalbe.domain.port.out.LoadUserPort;
 import org.example.bancodigitalbe.domain.port.out.SaveNewUserPort;
+import org.example.bancodigitalbe.domain.port.out.UpdateUserPersonalDataPort;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-public class UserPersistenceAdapter implements SaveNewUserPort, LoadUserPort {
+public class UserPersistenceAdapter implements SaveNewUserPort, LoadUserPort, UpdateUserPersonalDataPort {
 
     private final UserJpaRepository userJpaRepository;
 
@@ -42,6 +43,18 @@ public class UserPersistenceAdapter implements SaveNewUserPort, LoadUserPort {
                 .map(this::userJpaEntityToDomainUser);
     }
 
+    @Override
+    public User updatePersonalData(Long userId, String email, String phone, String address) {
+        UserJpaEntity userJpaEntity = userJpaRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("[!] userId {" + userId + "} not found"));
+
+        userJpaEntity.setEmail(email);
+        userJpaEntity.setPhone(phone);
+        userJpaEntity.setAddress(address);
+
+        return userJpaEntityToDomainUser(userJpaRepository.save(userJpaEntity));
+    }
+
     private User userJpaEntityToDomainUser(UserJpaEntity userJpaEntity) {
         return new User(
                 userJpaEntity.getUserId(),
@@ -49,7 +62,10 @@ public class UserPersistenceAdapter implements SaveNewUserPort, LoadUserPort {
                 userJpaEntity.getPassword(),
                 userJpaEntity.getName(),
                 userJpaEntity.getLastName(),
-                userJpaEntity.getBirthDate()
+                userJpaEntity.getBirthDate(),
+                userJpaEntity.getEmail(),
+                userJpaEntity.getPhone(),
+                userJpaEntity.getAddress()
         );
     }
 }
