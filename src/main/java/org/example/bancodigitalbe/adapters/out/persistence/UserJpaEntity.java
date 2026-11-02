@@ -27,6 +27,10 @@ public class UserJpaEntity {
     @Size(max = 60)
     private String password;
 
+    // BCrypt hash of the 4 digit transactional PIN (RF07); null until activated
+    @Size(max = 60)
+    private String pin;
+
     // CuentaBancaria cuentaBancaria;
 
     @NotBlank
@@ -39,6 +43,16 @@ public class UserJpaEntity {
 
     @NotNull
     private LocalDate birthDate;
+
+    // contact data is filled in later, through the personal data module (RF04)
+    @Size(max = 120)
+    private String email;
+
+    @Size(max = 10)
+    private String phone;
+
+    @Size(max = 150)
+    private String address;
 
     public UserJpaEntity() {
     }

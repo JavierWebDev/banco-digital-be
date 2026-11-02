@@ -11,3 +11,6 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      # "user" is a reserved word in standard SQL (H2, PostgreSQL); let Hibernate quote it
+      hibernate.auto_quote_keyword: true
