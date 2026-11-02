@@ -6,6 +6,9 @@ import org.example.bancodigitalbe.domain.model.Transaction;
 import org.example.bancodigitalbe.domain.port.in.DepositCommand;
 import org.example.bancodigitalbe.domain.port.in.DepositUseCase;
 import org.example.bancodigitalbe.domain.port.in.GetBalanceUseCase;
+import org.example.bancodigitalbe.domain.port.in.WithdrawCommand;
+import org.example.bancodigitalbe.domain.port.in.WithdrawUseCase;
+import org.example.bancodigitalbe.domain.model.WithdrawalResult;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +23,13 @@ public class AccountController {
 
     private final GetBalanceUseCase getBalanceUseCase;
     private final DepositUseCase depositUseCase;
+    private final WithdrawUseCase withdrawUseCase;
 
-    public AccountController(GetBalanceUseCase getBalanceUseCase, DepositUseCase depositUseCase) {
+    public AccountController(GetBalanceUseCase getBalanceUseCase, DepositUseCase depositUseCase,
+                             WithdrawUseCase withdrawUseCase) {
         this.getBalanceUseCase = getBalanceUseCase;
         this.depositUseCase = depositUseCase;
+        this.withdrawUseCase = withdrawUseCase;
     }
 
     @GetMapping("/me/balance")
@@ -41,6 +47,15 @@ public class AccountController {
 
         return ResponseEntity.ok(TransactionResponse.fromDomainTransaction(
                 transaction, "[+] deposito procesado correctamente"));
+    }
+
+    @PostMapping("/me/withdrawals")
+    public ResponseEntity<WithdrawalResponse> withdraw(Authentication authentication,
+                                                       @Valid @RequestBody WithdrawRequest withdrawRequest) {
+        WithdrawalResult result = withdrawUseCase.withdraw(new WithdrawCommand(
+                authentication.getName(), withdrawRequest.amount(), withdrawRequest.pin()));
+
+        return ResponseEntity.ok(WithdrawalResponse.fromDomainResult(result));
     }
 
 }
