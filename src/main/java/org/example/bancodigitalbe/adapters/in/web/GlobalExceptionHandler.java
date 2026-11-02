@@ -1,5 +1,6 @@
 package org.example.bancodigitalbe.adapters.in.web;
 
+import org.example.bancodigitalbe.domain.exceptions.AccountNotFoundException;
 import org.example.bancodigitalbe.domain.exceptions.UserNotFoundException;
 import org.example.bancodigitalbe.domain.exceptions.UsernameAlreadyExistsException;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ApiErrorResponse.of("USER_NOT_FOUND", e.getMessage()));
+    }
+
+    @ExceptionHandler(AccountNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleAccountNotFound(AccountNotFoundException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiErrorResponse.of("ACCOUNT_NOT_FOUND", e.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
