@@ -2,6 +2,8 @@ package org.example.bancodigitalbe.adapters.in.web;
 
 import org.example.bancodigitalbe.domain.exceptions.AccountNotFoundException;
 import org.example.bancodigitalbe.domain.exceptions.InvalidAmountException;
+import org.example.bancodigitalbe.domain.exceptions.InvalidCurrentCredentialException;
+import org.example.bancodigitalbe.domain.exceptions.InvalidPinFormatException;
 import org.example.bancodigitalbe.domain.exceptions.InvalidPersonalDataException;
 import org.example.bancodigitalbe.domain.exceptions.UserNotFoundException;
 import org.example.bancodigitalbe.domain.exceptions.UsernameAlreadyExistsException;
@@ -51,6 +53,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .badRequest()
                 .body(ApiErrorResponse.of("INVALID_PERSONAL_DATA", e.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidCurrentCredentialException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidCurrentCredential(InvalidCurrentCredentialException e) {
+        return ResponseEntity
+                .badRequest()
+                .body(ApiErrorResponse.of("INVALID_CURRENT_CREDENTIAL", e.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidPinFormatException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidPinFormat(InvalidPinFormatException e) {
+        return ResponseEntity
+                .badRequest()
+                .body(ApiErrorResponse.of("INVALID_PIN_FORMAT", e.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
