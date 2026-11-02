@@ -1,6 +1,12 @@
 package org.example.bancodigitalbe.adapters.in.web;
 
 import org.example.bancodigitalbe.domain.exceptions.AccountNotFoundException;
+import org.example.bancodigitalbe.domain.exceptions.AmountBelowMinimumException;
+import org.example.bancodigitalbe.domain.exceptions.AmountNotDispensableException;
+import org.example.bancodigitalbe.domain.exceptions.DailyWithdrawalLimitExceededException;
+import org.example.bancodigitalbe.domain.exceptions.InsufficientFundsException;
+import org.example.bancodigitalbe.domain.exceptions.InvalidPinException;
+import org.example.bancodigitalbe.domain.exceptions.PinNotActivatedException;
 import org.example.bancodigitalbe.domain.exceptions.InvalidAmountException;
 import org.example.bancodigitalbe.domain.exceptions.InvalidCurrentCredentialException;
 import org.example.bancodigitalbe.domain.exceptions.InvalidPinFormatException;
@@ -67,6 +73,50 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .badRequest()
                 .body(ApiErrorResponse.of("INVALID_PIN_FORMAT", e.getMessage()));
+    }
+
+    // RF11: cada rechazo de retiro indica exactamente la regla que no se cumple
+
+    @ExceptionHandler(InvalidPinException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidPin(InvalidPinException e) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(ApiErrorResponse.of("INVALID_PIN", e.getMessage()));
+    }
+
+    @ExceptionHandler(PinNotActivatedException.class)
+    public ResponseEntity<ApiErrorResponse> handlePinNotActivated(PinNotActivatedException e) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ApiErrorResponse.of("PIN_NOT_ACTIVATED", e.getMessage()));
+    }
+
+    @ExceptionHandler(AmountBelowMinimumException.class)
+    public ResponseEntity<ApiErrorResponse> handleAmountBelowMinimum(AmountBelowMinimumException e) {
+        return ResponseEntity
+                .unprocessableEntity()
+                .body(ApiErrorResponse.of("AMOUNT_BELOW_MINIMUM", e.getMessage()));
+    }
+
+    @ExceptionHandler(AmountNotDispensableException.class)
+    public ResponseEntity<ApiErrorResponse> handleAmountNotDispensable(AmountNotDispensableException e) {
+        return ResponseEntity
+                .unprocessableEntity()
+                .body(ApiErrorResponse.of("AMOUNT_NOT_DISPENSABLE", e.getMessage()));
+    }
+
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ResponseEntity<ApiErrorResponse> handleInsufficientFunds(InsufficientFundsException e) {
+        return ResponseEntity
+                .unprocessableEntity()
+                .body(ApiErrorResponse.of("INSUFFICIENT_FUNDS", e.getMessage()));
+    }
+
+    @ExceptionHandler(DailyWithdrawalLimitExceededException.class)
+    public ResponseEntity<ApiErrorResponse> handleDailyLimitExceeded(DailyWithdrawalLimitExceededException e) {
+        return ResponseEntity
+                .unprocessableEntity()
+                .body(ApiErrorResponse.of("DAILY_LIMIT_EXCEEDED", e.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
