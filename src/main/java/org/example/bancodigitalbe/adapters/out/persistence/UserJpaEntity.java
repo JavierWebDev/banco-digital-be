@@ -27,6 +27,10 @@ public class UserJpaEntity {
     @Size(max = 60)
     private String password;
 
+    // BCrypt hash of the 4 digit transactional PIN (RF07); null until activated
+    @Size(max = 60)
+    private String pin;
+
     // CuentaBancaria cuentaBancaria;
 
     @NotBlank
