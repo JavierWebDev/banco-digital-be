@@ -40,6 +40,16 @@ public class UserJpaEntity {
     @NotNull
     private LocalDate birthDate;
 
+    // contact data is filled in later, through the personal data module (RF04)
+    @Size(max = 120)
+    private String email;
+
+    @Size(max = 10)
+    private String phone;
+
+    @Size(max = 150)
+    private String address;
+
     public UserJpaEntity() {
     }
 }
