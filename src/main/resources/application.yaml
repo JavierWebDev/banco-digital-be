@@ -1,3 +1,13 @@
 spring:
   application:
     name: banco-digital-be
+  datasource:
+    url: "jdbc:mysql://localhost/bank_database"
+    username: "root"
+    password: ""
+
+  # JPA
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
