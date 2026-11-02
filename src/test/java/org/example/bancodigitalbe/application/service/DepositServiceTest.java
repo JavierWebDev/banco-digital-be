@@ -54,7 +54,7 @@ class DepositServiceTest {
 
     private void givenAccountWithBalance(String balance) {
         when(loadUserPort.loadByUsername("javier")).thenReturn(Optional.of(
-                new User(1L, "javier", "$2a$10$hash", "Javier", "Gomez", LocalDate.of(2000, 1, 1))));
+                new User(1L, "javier", "$2a$10$hash", "Javier", "Gomez", LocalDate.of(2000, 1, 1), null, null, null)));
         when(loadAccountPort.loadByUserId(1L)).thenReturn(Optional.of(
                 new Account(7L, 1L, new BigDecimal(balance))));
     }

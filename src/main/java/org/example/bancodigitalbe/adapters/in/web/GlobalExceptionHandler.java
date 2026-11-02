@@ -2,6 +2,7 @@ package org.example.bancodigitalbe.adapters.in.web;
 
 import org.example.bancodigitalbe.domain.exceptions.AccountNotFoundException;
 import org.example.bancodigitalbe.domain.exceptions.InvalidAmountException;
+import org.example.bancodigitalbe.domain.exceptions.InvalidPersonalDataException;
 import org.example.bancodigitalbe.domain.exceptions.UserNotFoundException;
 import org.example.bancodigitalbe.domain.exceptions.UsernameAlreadyExistsException;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .badRequest()
                 .body(ApiErrorResponse.of("INVALID_AMOUNT", e.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidPersonalDataException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidPersonalData(InvalidPersonalDataException e) {
+        return ResponseEntity
+                .badRequest()
+                .body(ApiErrorResponse.of("INVALID_PERSONAL_DATA", e.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
